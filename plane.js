@@ -1,13 +1,16 @@
 // 获取到开始界面元素
 var startDiv = document.getElementById('startDiv');
 // 获取游戏主界面元素
-var mainDiv = document.getElementById('mainDiv');
+var 马上打包 = document.getElementById('mainDiv');
 //获取结束界面的盒子
 var endDiv = document.getElementById('endDiv');
 //获取最后的得分
 var endScore = document.getElementById('endScore');
 //获取左上角的盒子
 var leftScore = document.getElementById('leftScore');
+
+//获取到暂停界面的盒子
+var suspendDiv = document.getElementById('suspendDiv');
 
 var scores = 0; //计分
 //定时器的标识符
@@ -140,6 +143,44 @@ function bianjie(){
 		}
 	}
 }
+
+var number = 0; //0暂停  1继续
+//暂停的方法
+function zanting(){
+	if (number==0) { //暂停
+		//(1)修改显示的样式
+		suspendDiv.style.display = 'block';
+		//(2)移除事件
+		if (document.removeEventListener) {
+			mainDiv.removeEventListener('mousemove',yidong);
+			body.removeEventListener('mousemove',bianjie);
+
+		}else if(document.detachEvent){
+			mainDiv.detachEvent('onmousemove',yidong);
+			body.detachEvent('onmousemove',bianjie);
+		}
+
+		//关闭定时器
+		clearInterval(timer);
+		number = 1;
+
+	}else{
+
+		suspendDiv.style.display = 'none';
+		//开启事件
+		if (document.addEventListener) {
+			mainDiv.addEventListener('mousemove',yidong);
+			body.addEventListener('mousemove',bianjie);
+		}else if(mainDiv.attachEvent){
+			mainDiv.attachEvent('onmousemove',yidong);
+			body.attachEvent('onmousemove',bianjie);
+		}
+		//开启定时器
+		timer = setInterval(circulation,20);
+		number = 0;
+	}
+
+}
 // 添加移动事件(mainDiv)
 //获取body
 var body = document.getElementsByTagName('body')[0];
@@ -148,9 +189,19 @@ if (document.addEventListener) {
 	// 2.给body添加移动事件,执行检测边界的行为
 	mainDiv.addEventListener('mousemove',yidong);
 	body.addEventListener('mousemove',bianjie);
+	selfPlane.imageNode.addEventListener('click',zanting);
+
+	var btn = suspendDiv.getElementsByTagName('button')[0];
+	//给按钮添加暂停的事件
+	btn.addEventListener('click',zanting);
 }else if(mainDiv.attachEvent){
 	mainDiv.attachEvent('onmousemove',yidong);
 	body.attachEvent('onmousemove',bianjie);
+	selfPlane.imageNode.attachEvent('onclick',zanting);
+
+	var btn = suspendDiv.getElementsByTagName('button')[0];
+	//给按钮添加暂停的事件
+	btn.attachEvent('click',zanting);
 }
 
 // 产生最小值到最大值的随机数
@@ -175,6 +226,7 @@ function Bullet(x,y,width,height,imageSrc){
 
 	//子弹图片节点元素的初始化方法
 	this.init = function(){
+
 		this.bulletImgNode = null;
 		//创建图片的节点
 		this.bulletImgNode = document.createElement('img');

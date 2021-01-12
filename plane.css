@@ -24,8 +24,11 @@
 	left: 85px;
 	border-radius: 50px;
 	/* 去掉button选中后外边框的样式 */
-	outline: none;
+	/* outline: none; */
 
+}
+button{
+	outline: none;
 }
 #mainDiv{
 	width: 320px;
@@ -96,5 +99,25 @@
 	border-radius: 20px;
 	margin-top: 10px;
 	margin-bottom: 10px;
-	outline: none;
+	/* outline: none; */
+}
+
+/* 暂停页面 */
+#suspendDiv{
+	position: absolute;
+	left: 80px;
+	top: 230px;
+	width: 160px;
+	z-index: 2;
+	display: none;
+}
+
+#suspendDiv button{
+	width: 160px;
+	height: 30px;
+	border: 1px solid gray;
+	border-radius: 20px;
+	margin-bottom: 20px;
+	background: rgb(195,200,201);
+	/* outline: none; */
 }
