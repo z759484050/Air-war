@@ -4,6 +4,7 @@
 	margin: 0;
 	padding: 0;
 }
+
 /* 1.修改开始界面的样式 */
 #startDiv{
 	width: 320px;
@@ -40,4 +41,60 @@
 }
 #mainDiv img{
 	position: absolute;
+	z-index: 1;
+}
+
+/* 分数盒子 */
+#scoreDiv{
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	font-size: 18px;
+	font-weight: bold;
+	z-index: 2;
+
+}
+
+/* 结束界面的盒子 */
+#endDiv{
+	position: absolute;
+	left: 80px;
+	top: 200px;
+	width: 160px;
+	border: 1px solid gray;
+	border-radius: 5px;
+	text-align: center;
+	background-color: rgb(215,221,222);
+	/* 代表是标签的优先,数值越大,在上面 */
+	z-index: 2;
+	display: none;
+
+}
+#text{
+	width: 160px;
+	height: 30px;
+	line-height: 30px;
+	font-size: 16px;
+	font-weight: bold;
+
+}
+
+#endScore{
+	width: 160px;
+	height: 80px;
+	line-height: 80px;
+	font-size: 16px;
+	font-weight: bold;
+	border-top: 1px solid gray;
+	border-bottom: 1px solid gray;
+
+}
+#endDiv button{
+	width: 80px;
+	height: 30px;
+	border: 1px solid gray;
+	border-radius: 20px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	outline: none;
 }

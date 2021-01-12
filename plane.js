@@ -2,7 +2,11 @@
 var startDiv = document.getElementById('startDiv');
 // 获取游戏主界面元素
 var mainDiv = document.getElementById('mainDiv');
-var score = 0;
+//获取结束界面的盒子
+var endDiv = document.getElementById('endDiv');
+//获取最后的得分
+var endScore = document.getElementById('endScore');
+var score = 100;
 //定时器的标识符
 var timer = null;
 
@@ -276,8 +280,12 @@ function circulation(){
    							body.detachEvent('onmousemove',bianjie);
    						}
 
-   						//(3)停止定时器
+   						//(3)停止定时
    						clearInterval(timer);
+   						//修改结束盒子的显示样式
+   						endDiv.style.display = 'block';
+   						//修改一下最后的分数
+   						endScore.innerHTML = score;
 
    					}
    				}
@@ -302,4 +310,9 @@ function begin(){
 	// 开启定时器
 	timer = setInterval(circulation,20);
 
+}
+//重新开始游戏
+function reAction(){
+	// alert(window.location);
+	window.location.reload();
 }
