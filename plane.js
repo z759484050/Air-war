@@ -3,6 +3,8 @@ var startDiv = document.getElementById('startDiv');
 // 获取游戏主界面元素
 var mainDiv = document.getElementById('mainDiv');
 var score = 0;
+//定时器的标识符
+var timer = null;
 
 /*2.声明创建飞机构造函数*/
 function Plane(x,y,width,height,imageSrc){
@@ -148,7 +150,7 @@ function Bullet(x,y,width,height,imageSrc){
 
 	//声明子弹移动的方法
 	this.bulletMove = function(){
-		this.bulletImgNode.style.top = this.bulletImgNode.offsetTop-3+'px';
+		this.bulletImgNode.style.top = this.bulletImgNode.offsetTop-10+'px';
 	}
 
 
@@ -245,8 +247,45 @@ function circulation(){
    			mainDiv.removeChild(bullets[i].bulletImgNode);
    			bullets.splice(i,1);
    			bulletsLength--;
-   		};
+   		}
    }
+
+   //5.本方飞机碰撞爆炸检测
+   for(var i = 0;i<enemysLength;i++){
+   		for(var j=0;j<bulletsLength;j++){
+   			//碰撞检测,敌机没有死亡
+   			if (enemys[i].planeIsDie==false) {
+
+   				//1.本方飞机的碰撞检测
+   				//左右碰撞
+   				if (enemys[i].imageNode.offsetLeft+enemys[i].planeWidth>=selfPlane.imageNode.offsetLeft
+   					&&enemys[i].imageNode.offsetLeft<=selfPlane.imageNode.offsetLeft+selfPlane.planeWidth) {
+   					//上下碰撞
+   					if (enemys[i].imageNode.offsetTop+enemys[i].planeHeight>=selfPlane.imageNode.offsetTop+40
+   						&&enemys[i].imageNode.offsetTop<=selfPlane.imageNode.offsetTop+selfPlane.planeHeight-10){
+   						//已经碰撞
+   						//(1)修改爆炸图片
+   						selfPlane.imageNode.src = 'image/本方飞机爆炸.gif';
+
+   						//(2)移除yidong,bianjie事件
+   						if (document.removeEventListener) {
+   							mainDiv.removeEventListener('mousemove',yidong);
+   							body.removeEventListener('mousemove',bianjie);
+   						}else if(document.detachEvent){
+   							mainDiv.detachEvent('onmousemove',yidong);
+   							body.detachEvent('onmousemove',bianjie);
+   						}
+
+   						//(3)停止定时器
+   						clearInterval(timer);
+
+   					}
+   				}
+   			}
+   		}
+   }
+
+
 
 
 
@@ -261,6 +300,6 @@ function begin(){
 	mainDiv.style.display = 'block';
 
 	// 开启定时器
-	setInterval(circulation,20);
+	timer = setInterval(circulation,20);
 
 }
