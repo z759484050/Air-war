@@ -32,7 +32,7 @@ function Plane(x,y,width,height,imageSrc){
 
 	//敌机向下移动方法
 	this.planeMove = function(){
-		// console.log(this.imageNode.offsetTop+'px'); //一开始的值就是敌机的y坐标
+		console.log(this.imageNode.offsetTop+'px'); //一开始的值就是敌机的y坐标
 		this.imageNode.style.top = this.imageNode.offsetTop+2+'px';
 		// 100+5+5+5+5+5
 
@@ -122,6 +122,38 @@ function Enemy(a,b,width,height,imageSrc){
 	Plane.call(this,r,0,width,height,imageSrc);
 }
 
+//声明创建子弹的函数
+function Bullet(x,y,width,height,imageSrc){
+	// 子弹对象属性赋值
+	this.bulletX = x;
+	this.bulletY = y;
+	this.bulletWidth = width;
+	this.bulletHeight = height;
+
+	//子弹图片节点元素的初始化方法
+	this.init = function(){
+		this.bulletImgNode = null;
+		//创建图片的节点
+		this.bulletImgNode = document.createElement('img');
+		//设置属性和样式
+		this.bulletImgNode.src = imageSrc;
+		this.bulletImgNode.style.left = this.bulletX+'px';
+		this.bulletImgNode.style.top = this.bulletY+'px';
+		//追加到mainDiv中
+		mainDiv.appendChild(this.bulletImgNode);
+
+	}
+	// 调用初始化方法
+	this.init();
+
+
+}
+//声明创建子弹的函数
+function AddBullet(x,y){
+
+	Bullet.call(this,x,y,6,14,'image/bullet1.png');
+}
+
 
 
 var mark1 = 0; //标记什么时候开始创建敌机
@@ -129,8 +161,6 @@ var mark2 = 0;  //标记什么时候创建什么类型的飞机
 var bgPositionY = 0;
 
 var enemys = new Array(); //创建敌机数组,存放不同类型的飞机
-
-
 
 // 声明定时器调用的循环方法
 function circulation(){
@@ -185,13 +215,18 @@ function circulation(){
 
    }
 
-   
+   //4.创建子弹对象
+   if (mark1%5==0) {
 
-
+   	// console.log(selfPlane.imageNode.style.left);
+   	//获取子弹的x坐标
+   	var bX = parseInt(selfPlane.imageNode.style.left)+30
+   	//获取子弹的y坐标
+   	var bY = parseInt(selfPlane.imageNode.style.top)-10;
+   	new AddBullet(bX,bY);
+   }
 
 }
-
-
 
 // console.log(enemys);
 
