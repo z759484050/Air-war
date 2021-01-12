@@ -8,13 +8,36 @@
 	<link rel="stylesheet" href="plane.css">
 </head>
 <body>
-	<div>
+	<div >
 		<!-- 1.开始界面 -->
 		<div id = 'startDiv'>
 			<button onclick="begin()" >开始游戏</button>
 		</div>
 		<!-- 2.游戏主界面 -->
-		<div id = 'mainDiv'></div>
+		<div id = 'mainDiv'>
+				<!-- 显示分数的盒子 -->
+			<div id = 'scoreDiv'>
+				<label>分数:</label>
+				<label id = 'leftScore'>0</label>
+			</div>
+
+			<!-- 结束界面的盒子 -->
+			<div id = 'endDiv'>
+				<p id = 'text'>飞机大战分数</p>
+				<p id= 'endScore'>0</p>
+				<button onclick="reAction()">重新开始游戏</button>
+			</div>
+
+			<!-- 暂停界面的盒子 -->
+			<div id = 'suspendDiv'>
+				<button>继续</button>
+				<button>重新开始</button>
+				<button>回到主页</button>
+			</div>
+
+		</div>
+		
+		
 		
 	</div>
 

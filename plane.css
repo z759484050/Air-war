@@ -4,6 +4,7 @@
 	margin: 0;
 	padding: 0;
 }
+
 /* 1.修改开始界面的样式 */
 #startDiv{
 	width: 320px;
@@ -23,12 +24,16 @@
 	left: 85px;
 	border-radius: 50px;
 	/* 去掉button选中后外边框的样式 */
-	outline: none;
+	/* outline: none; */
 
+}
+button{
+	outline: none;
 }
 #mainDiv{
 	width: 320px;
 	height: 568px;
+
 	background: url('image/background_1.png');
 	/* display: block; */
 	position: absolute;
@@ -36,4 +41,83 @@
 	/* 将游戏主界面隐藏不显示 */
 	display: none;
 	/* visibility: hidden; */
+}
+#mainDiv img{
+	position: absolute;
+	z-index: 1;
+}
+
+/* 分数盒子 */
+#scoreDiv{
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	font-size: 18px;
+	font-weight: bold;
+	z-index: 2;
+
+}
+
+/* 结束界面的盒子 */
+#endDiv{
+	position: absolute;
+	left: 80px;
+	top: 200px;
+	width: 160px;
+	border: 1px solid gray;
+	border-radius: 5px;
+	text-align: center;
+	background-color: rgb(215,221,222);
+	/* 代表是标签的优先,数值越大,在上面 */
+	z-index: 2;
+	display: none;
+
+}
+#text{
+	width: 160px;
+	height: 30px;
+	line-height: 30px;
+	font-size: 16px;
+	font-weight: bold;
+
+}
+
+#endScore{
+	width: 160px;
+	height: 80px;
+	line-height: 80px;
+	font-size: 16px;
+	font-weight: bold;
+	border-top: 1px solid gray;
+	border-bottom: 1px solid gray;
+
+}
+#endDiv button{
+	width: 80px;
+	height: 30px;
+	border: 1px solid gray;
+	border-radius: 20px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	/* outline: none; */
+}
+
+/* 暂停页面 */
+#suspendDiv{
+	position: absolute;
+	left: 80px;
+	top: 230px;
+	width: 160px;
+	z-index: 2;
+	display: none;
+}
+
+#suspendDiv button{
+	width: 160px;
+	height: 30px;
+	border: 1px solid gray;
+	border-radius: 20px;
+	margin-bottom: 20px;
+	background: rgb(195,200,201);
+	/* outline: none; */
 }
