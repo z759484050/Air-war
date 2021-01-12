@@ -54,21 +54,70 @@ function yidong(){
 	var selfPlaneX = e.clientX;
 	var selfPlaneY = e.clientY;
 
-	console.log(selfPlaneX,selfPlaneY);
+	// console.log(selfPlaneX,selfPlaneY);
 
 	// 设置本方飞机图片节点元素的坐标
 	ourPlane.style.left = selfPlaneX-500-selfPlane.planeWidth/2+'px';
 	ourPlane.style.top = selfPlaneY-selfPlane.planeHeight/2+'px';
 
 }
+// 声明边界检测的函数
+function bianjie(){
+
+	var e = window.event;
+
+	var bodyX = e.clientX;
+	var bodyY = e.clientY;
+	// console.log(bodyX,bodyY);
+
+	if (bodyX<500+33||bodyX>820-33||bodyY<0+40||bodyY>568-40) {
+		// 移除事件
+		// 浏览器兼容
+		if (document.removeEventListener) {
+			mainDiv.removeEventListener('mousemove',yidong);
+		}else if(document.detachEvent){
+			mainDiv.detachEvent('onmousemove',yidong)
+		}
+
+	}else{ //没有移出边界,添加移动事件
+		if (document.addEventListener) {
+			mainDiv.addEventListener('mousemove',yidong);
+		}else if(document.attachEvent){
+			mainDiv.attachEvent('onmousemove',yidong);
+		}
+	}
+
+
+}
 // 添加移动事件(mainDiv)
-if (mainDiv.addEventListener) {
-	mainDiv.addEventListener('mousemove',yidong);
+//获取body
+var body = document.getElementsByTagName('body')[0];
+if (document.addEventListener) {
+	// 1.首先要获取到body
+	// 2.给body添加移动事件,执行检测边界的行为
+	// mainDiv.addEventListener('mousemove',yidong);
+	body.addEventListener('mousemove',bianjie);
 }else if(mainDiv.attachEvent){
-	mainDiv.attachEvent('onmousemove',yidong);
+	// mainDiv.attachEvent('onmousemove',yidong);
+	body.attachEvent('onmousemove',bianjie);
 }
 
+var bgPositionY = 0;
 
+// 声明定时器调用的循环方法
+function circulation(){
+	// 1.模拟背景往下移动
+	mainDiv.style.backgroundPositionY = bgPositionY+'px';
+	mainDiv.style.backgroundRepeat = 'repeat-y';
+	bgPositionY+=2;
+
+	if (backgroundPositionY==568) {
+		backgroundPositionY=0;
+	};
+
+
+
+}
 
 /*1.当点击开始按钮的时候会执行的方法*/
 function begin(){
@@ -77,4 +126,8 @@ function begin(){
 	// 游戏主界面div.display = 'block';
 	startDiv.style.display = 'none';
 	mainDiv.style.display = 'block';
+
+	// 开启定时器
+	setInterval(circulation,20);
+
 }
