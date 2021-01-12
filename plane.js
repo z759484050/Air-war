@@ -86,8 +86,6 @@ function bianjie(){
 			mainDiv.attachEvent('onmousemove',yidong);
 		}
 	}
-
-
 }
 // 添加移动事件(mainDiv)
 //获取body
@@ -95,13 +93,27 @@ var body = document.getElementsByTagName('body')[0];
 if (document.addEventListener) {
 	// 1.首先要获取到body
 	// 2.给body添加移动事件,执行检测边界的行为
-	// mainDiv.addEventListener('mousemove',yidong);
+	mainDiv.addEventListener('mousemove',yidong);
 	body.addEventListener('mousemove',bianjie);
 }else if(mainDiv.attachEvent){
-	// mainDiv.attachEvent('onmousemove',yidong);
+	mainDiv.attachEvent('onmousemove',yidong);
 	body.attachEvent('onmousemove',bianjie);
 }
 
+// 产生最小值到最大值的随机数
+function random(min,max){ //1  5
+	return Math.floor(Math.random()*(max-min)+min);
+}
+// 声明敌方飞机创建函数
+function Enemy(a,b,width,height,imageSrc){
+	var r = random(a,b); //23 274
+	// console.log(r);
+	Plane.call(this,r,50,width,height,imageSrc);
+}
+
+
+var mark1 = 0; //标记什么时候开始创建敌机
+var mark2 = 0;  //标记什么时候创建什么类型的飞机
 var bgPositionY = 0;
 
 // 声明定时器调用的循环方法
@@ -109,11 +121,33 @@ function circulation(){
 	// 1.模拟背景往下移动
 	mainDiv.style.backgroundPositionY = bgPositionY+'px';
 	mainDiv.style.backgroundRepeat = 'repeat-y';
-	bgPositionY+=2;
+	bgPositionY+=1;
 
-	if (backgroundPositionY==568) {
-		backgroundPositionY=0;
+	if (bgPositionY==568) {
+		bgPositionY=0;
 	};
+
+	//2.创建敌方飞机
+   // 
+   mark1++;
+   if (mark1 == 50) { //1000毫秒创建敌机
+   	mark2++;
+   	if (mark2%5==0) { //创建中型飞机
+   		new Enemy(23,274,46,60,'image/enemy3_fly_1.png');
+   	}
+   	if (mark2%20==0) { //创建大型飞机
+
+   		new Enemy(55,210,110,164,'image/enemy2_fly_1.png');
+   	}else{ //创建小型飞机
+   		new Enemy(50,200,34,24,'image/enemy1_fly_1.png');
+   	}
+   	mark1=0;
+   };
+ 
+   
+
+
+
 
 
 
