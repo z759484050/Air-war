@@ -6,19 +6,40 @@ var mainDiv = document.getElementById('mainDiv');
 var endDiv = document.getElementById('endDiv');
 //获取最后的得分
 var endScore = document.getElementById('endScore');
-var score = 100;
+//获取左上角的盒子
+var leftScore = document.getElementById('leftScore');
+
+var scores = 0; //计分
 //定时器的标识符
 var timer = null;
 
 /*2.声明创建飞机构造函数*/
-function Plane(x,y,width,height,imageSrc){
+function Plane(hp,score,sudu,dietime,boomimage,x,y,width,height,imageSrc){
 	//我的飞机设置属性
 	this.planeX = x;
 	this.planeY = y;
 	this.planeWidth = width;
 	this.planeHeight = height;
 
-	this.planeIsDie = false;
+	this.planeIsDie = false; //默认飞机不死亡
+
+	//给飞机添加血量
+	this.planeHp = hp;
+	//打死每个飞机获得分数
+	this.planeScore = score;
+	//给飞机添加速度
+	this.planeSudu = sudu;
+
+	//飞机的死亡时间
+	this.planeDieTime = dietime;
+
+	//飞机爆炸的图片
+	this.planeboomImage = boomimage;
+
+	//标记飞机在什么时间死亡
+	this.planeDieTimes = 0;
+
+
 
 	//创建图片的节点元素
 	this.init = function(){
@@ -38,9 +59,23 @@ function Plane(x,y,width,height,imageSrc){
 
 	//敌机向下移动方法
 	this.planeMove = function(){
+		// console.log(scores);
 		// console.log(this.imageNode.offsetTop+'px'); //一开始的值就是敌机的y坐标
-		this.imageNode.style.top = this.imageNode.offsetTop+2+'px';
+		// this.imageNode.style.top = this.imageNode.offsetTop+3+'px';
 		// 100+5+5+5+5+5
+		if (scores<5000) {
+			this.imageNode.style.top = this.imageNode.offsetTop+this.planeSudu+'px';
+		}else if(scores>=5000&&scores<10000){
+			this.imageNode.style.top = this.imageNode.offsetTop+this.planeSudu+1+'px';
+		}else if(scores>=10000&&scores<15000){
+			this.imageNode.style.top = this.imageNode.offsetTop+this.planeSudu+2+'px';
+		}else if (scores>=15000&&scores<20000) {
+			this.imageNode.style.top = this.imageNode.offsetTop+this.planeSudu+3+'px';
+		}else if (scores>=20000&&scores<25000) {
+			this.imageNode.style.top = this.imageNode.offsetTop+this.planeSudu+4+'px';
+		}else{
+			this.imageNode.style.top = this.imageNode.offsetTop+this.planeSudu+5+'px';
+		}
 
 	}
 
@@ -49,7 +84,8 @@ function Plane(x,y,width,height,imageSrc){
 /*3.声明我方飞机的函数*/
 function OurPlane(x,y){
 	// call()函数用于调用Plan函数,它会将当前对象传到Plan函数中使用
-	Plane.call(this,x,y,66,80,'image/我的飞机.gif');
+	Plane.call(this,0,0,0,6666,'image/本方飞机爆炸.gif',x,y,66,80,'image/我的飞机.gif');
+			  // hp,score,sudu,dietime,boomimage,x,y,width,height,imageSrc
 	// this.imageNode.style.position = 'absolute';
 	this.imageNode.setAttribute('id','ourPlaneImg');
 
@@ -122,10 +158,11 @@ function random(min,max){ //1  5
 	return Math.floor(Math.random()*(max-min)+min);
 }
 // 声明敌方飞机创建函数
-function Enemy(a,b,width,height,imageSrc){
+function Enemy(hp,score,sudu,dietime,boomimage,a,b,width,height,imageSrc){
+			//hp,score,sudu,dietime,boomimage,x,y,width,height,imageSrc
 	var r = random(a,b); //23 274
 	// console.log(r);
-	Plane.call(this,r,0,width,height,imageSrc);
+	Plane.call(this,hp,score,sudu,dietime,boomimage,r,0,width,height,imageSrc);
 }
 
 //声明创建子弹的函数
@@ -164,9 +201,6 @@ function AddBullet(x,y){
 
 	Bullet.call(this,x,y,6,14,'image/bullet1.png');
 }
-
-
-
 var mark1 = 0; //标记什么时候开始创建敌机
 var mark2 = 0;  //标记什么时候创建什么类型的飞机
 var bgPositionY = 0;
@@ -190,15 +224,16 @@ function circulation(){
    if (mark1 == 50) { //1000毫秒创建敌机
    	mark2++;
    	if (mark2%5==0) { //创建中型飞机
-   	    var middleEnemy = new Enemy(23,274,46,60,'image/enemy3_fly_1.png');
+   	    var middleEnemy = new Enemy(9,5000,random(1,3),200,'image/中飞机爆炸.gif',23,274,46,60,'image/enemy3_fly_1.png');
+   	    						//hp,score,sudu,dietime,boomimage,x,y,width,height,imageSrc
    	    //将中型飞机添加到敌机数组中
    	    enemys.push(middleEnemy);
    	}
    	if (mark2%20==0) { //创建大型飞机
-   		var bigEnemy = new Enemy(55,210,110,164,'image/enemy2_fly_1.png');
+   		var bigEnemy = new Enemy(36,10000,1,500,'image/大飞机爆炸.gif',55,210,110,164,'image/enemy2_fly_1.png');
    		enemys.push(bigEnemy);
    	}else{ //创建小型飞机
-   		var smallEnemy = new Enemy(50,200,34,24,'image/enemy1_fly_1.png');
+   		var smallEnemy = new Enemy(3,1000,random(1,4),100,'image/小飞机爆炸.gif',50,200,34,24,'image/enemy1_fly_1.png');
    		enemys.push(smallEnemy);
    	}
    	mark1=0;
@@ -206,6 +241,7 @@ function circulation(){
 
    //获取到敌方飞机数组的长度
    var enemysLength = enemys.length;
+   //遍历每一个敌机,向下移动
    for(var i = 0;i<enemysLength;i++){
 
    		if (!enemys[i].planeIsDie) { //飞机没有死
@@ -222,6 +258,20 @@ function circulation(){
    			//从start位置删除delectCount数量的元素,并且返回一个新的数组
    			enemys.splice(i,1);
    			enemysLength--;
+
+   		}
+
+   		//当敌机被标记死亡状态时
+   		if (enemys[i].planeIsDie) { //飞机已经被打死
+   			//模拟敌机过一段时间,才被移除
+   			enemys[i].planeDieTimes+=20;
+   			if (enemys[i].planeDieTime == enemys[i].planeDieTimes) {
+   			//飞机移除
+   			mainDiv.removeChild(enemys[i].imageNode);
+   			enemys.splice(i,1);
+   			enemysLength--;
+
+   			}
 
    		}
 
@@ -259,7 +309,6 @@ function circulation(){
    		for(var j=0;j<bulletsLength;j++){
    			//碰撞检测,敌机没有死亡
    			if (enemys[i].planeIsDie==false) {
-
    				//1.本方飞机的碰撞检测
    				//左右碰撞
    				if (enemys[i].imageNode.offsetLeft+enemys[i].planeWidth>=selfPlane.imageNode.offsetLeft
@@ -285,17 +334,46 @@ function circulation(){
    						//修改结束盒子的显示样式
    						endDiv.style.display = 'block';
    						//修改一下最后的分数
-   						endScore.innerHTML = score;
+   						endScore.innerHTML = scores;
 
    					}
    				}
    			}
+
+   			//判断子弹与敌机的碰撞
+   			// hp,score,sudu,dietime,boomimage
+   			//左右
+   			if (bullets[j].bulletImgNode.offsetLeft+bullets[j].bulletWidth>=enemys[i].imageNode.offsetLeft
+   			    &&bullets[j].bulletImgNode.offsetLeft<=enemys[i].imageNode.offsetLeft+enemys[i].planeWidth) { //15 45
+   				//上下
+   				if (bullets[j].bulletImgNode.offsetTop+bullets[j].bulletHeight>=enemys[i].imageNode.offsetTop
+   					&&bullets[j].bulletImgNode.offsetTop<=enemys[i].imageNode.offsetTop+enemys[i].planeHeight) {
+
+   					//敌机的血量 = 敌机的血量-3
+   					enemys[i].planeHp -=3;
+   					if (enemys[i].planeHp==0) {
+   					//(1)修改敌机的爆照图片
+   					enemys[i].imageNode.src = enemys[i].planeboomImage /*大,小,中*/;
+   					//(2)计分
+   					scores = scores+enemys[i].planeScore; /*1000 5000 10000*/
+   					//(3)修改一下左上角
+   					leftScore.innerHTML = scores;
+   					//(4)将敌机标记为死亡
+   					enemys[i].planeIsDie = true;
+
+   					}
+   				//满足子弹与敌机碰撞 子弹移除
+   				mainDiv.removeChild(bullets[j].bulletImgNode);
+   				bullets.splice(j,1);
+   				bulletsLength--;
+   				break;
+
+   			}
+   				
    		}
+   				
+   	  }
    }
-
-
-
-
 
 }
 
