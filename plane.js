@@ -14,6 +14,7 @@ function Plane(x,y,width,height,imageSrc){
 
 	this.init = function(){
 		this.imageNode = null;
+		// 创建img标签
 		this.imageNode = document.createElement('img');
 		this.imageNode.setAttribute('src',imageSrc);
 		// this.imageNode.src = imageSrc;
@@ -28,16 +29,46 @@ function Plane(x,y,width,height,imageSrc){
 
 }
 
-/*声明我方飞机的函数*/
+/*3.声明我方飞机的函数*/
 function OurPlane(x,y){
 	// call()函数用于调用Plan函数,它会将当前对象传到Plan函数中使用
 	Plane.call(this,x,y,66,80,'image/我的飞机.gif');
+	// this.imageNode.style.position = 'absolute';
+	this.imageNode.setAttribute('id','ourPlaneImg');
 
 }
 
-// 我方飞机函数创建
+// 4.我方飞机函数创建
 var selfPlane = new OurPlane(127,480);
-console.log(mainDiv);
+// console.log(mainDiv);
+
+// 5.获取到本方飞机img标签元素
+var ourPlane = document.getElementById('ourPlaneImg');
+// 声明移动的函数
+function yidong(){
+
+	//获取到event对象
+	var e = window.event;
+
+	// 获取鼠标的坐标
+	var selfPlaneX = e.clientX;
+	var selfPlaneY = e.clientY;
+
+	console.log(selfPlaneX,selfPlaneY);
+
+	// 设置本方飞机图片节点元素的坐标
+	ourPlane.style.left = selfPlaneX-500-selfPlane.planeWidth/2+'px';
+	ourPlane.style.top = selfPlaneY-selfPlane.planeHeight/2+'px';
+
+}
+// 添加移动事件(mainDiv)
+if (mainDiv.addEventListener) {
+	mainDiv.addEventListener('mousemove',yidong);
+}else if(mainDiv.attachEvent){
+	mainDiv.attachEvent('onmousemove',yidong);
+}
+
+
 
 /*1.当点击开始按钮的时候会执行的方法*/
 function begin(){
