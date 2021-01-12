@@ -29,6 +29,7 @@
 #mainDiv{
 	width: 320px;
 	height: 568px;
+
 	background: url('image/background_1.png');
 	/* display: block; */
 	position: absolute;

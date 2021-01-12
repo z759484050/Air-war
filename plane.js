@@ -32,7 +32,7 @@ function Plane(x,y,width,height,imageSrc){
 
 	//敌机向下移动方法
 	this.planeMove = function(){
-		console.log(this.imageNode.offsetTop+'px'); //一开始的值就是敌机的y坐标
+		// console.log(this.imageNode.offsetTop+'px'); //一开始的值就是敌机的y坐标
 		this.imageNode.style.top = this.imageNode.offsetTop+2+'px';
 		// 100+5+5+5+5+5
 
@@ -146,6 +146,11 @@ function Bullet(x,y,width,height,imageSrc){
 	// 调用初始化方法
 	this.init();
 
+	//声明子弹移动的方法
+	this.bulletMove = function(){
+		this.bulletImgNode.style.top = this.bulletImgNode.offsetTop-3+'px';
+	}
+
 
 }
 //声明创建子弹的函数
@@ -162,6 +167,7 @@ var bgPositionY = 0;
 
 var enemys = new Array(); //创建敌机数组,存放不同类型的飞机
 
+var bullets = [];//创建子弹的数组,存放所有的子弹对象
 // 声明定时器调用的循环方法
 function circulation(){
 	// 1.模拟背景往下移动
@@ -217,18 +223,34 @@ function circulation(){
 
    //4.创建子弹对象
    if (mark1%5==0) {
-
    	// console.log(selfPlane.imageNode.style.left);
    	//获取子弹的x坐标
    	var bX = parseInt(selfPlane.imageNode.style.left)+30
    	//获取子弹的y坐标
    	var bY = parseInt(selfPlane.imageNode.style.top)-10;
-   	new AddBullet(bX,bY);
+   	//创建子弹对象
+   	var b = new AddBullet(bX,bY);
+   	var b1 =  new AddBullet(bX-25,bY+15);
+   	var b2 =  new AddBullet(bX+25,bY+15);
+   	//将子弹对象添加到子弹数组
+   	bullets.push(b,b1,b2);
    }
 
-}
+   var bulletsLength = bullets.length;
+   for(var i = 0; i<bulletsLength;i++){
+   		//子弹发射
+   		bullets[i].bulletMove();
+   		if (bullets[i].bulletImgNode.offsetTop<0) {
+   			//超出边界.移除子弹
+   			mainDiv.removeChild(bullets[i].bulletImgNode);
+   			bullets.splice(i,1);
+   			bulletsLength--;
+   		};
+   }
 
-// console.log(enemys);
+
+
+}
 
 /*1.当点击开始按钮的时候会执行的方法*/
 function begin(){
